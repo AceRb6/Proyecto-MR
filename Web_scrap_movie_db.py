@@ -8,7 +8,7 @@ import psycopg2
 import time
 
 # Configura la ruta al EdgeDriver
-edge_driver_path = "C:/Users/artu_/Downloads/edgedriver_win64/msedgedriver.exe"
+edge_driver_path = "C:/Users/artu_/Documents/tarea/ESCOM/4S/Analisis de datos/Proyecto-MR/edgedriver/msedgedriver.exe"
 
 # Configura las opciones de Edge
 options = webdriver.EdgeOptions()
@@ -22,7 +22,7 @@ conn = psycopg2.connect("dbname=Movies user=postgres password=as52")
 cur = conn.cursor()
 
 # Recorremos cada letra del alfabeto
-for letter in 'abcdefghijklmnopqrstuvwxyz':
+for letter in 'ab':
     # Abrir IMDb y buscar por letra
     driver.get("https://www.imdb.com/")
     search_bar = driver.find_element(By.ID, "suggestion-search")
@@ -76,6 +76,12 @@ for letter in 'abcdefghijklmnopqrstuvwxyz':
                 director = json_data.get("director", [{}])[0].get("name", "Director no encontrado")
                 actors = ", ".join([actor.get("name", "Actor no encontrado") for actor in json_data.get("actor", [])])
 
+                # Verificar si la película ya está en la base de datos
+                cur.execute("SELECT id FROM movies WHERE title = %s", (title,))
+                if cur.fetchone():
+                    print(f"La película '{title}' ya existe en la base de datos, omitiendo inserción.")
+                    continue  # Si existe, salta a la siguiente película
+                
                 # Insertar en la base de datos
                 cur.execute("INSERT INTO directors (director_name) VALUES (%s) ON CONFLICT (director_name) DO NOTHING", (director,))
                 cur.execute("SELECT id FROM directors WHERE director_name = %s", (director,))
