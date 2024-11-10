@@ -18,7 +18,14 @@ driver = webdriver.Edge(service=service, options=options)
 wait = WebDriverWait(driver, 10)
 
 # Conexión a la base de datos PostgreSQL
-conn = psycopg2.connect("dbname=Movies user=postgres password=as52")
+conn = psycopg2.connect(
+    dbname="Movies", 
+    user="postgres", 
+    password="as52", 
+    host="localhost", 
+    port="5433"
+)
+
 cur = conn.cursor()
 
 # Recorrer el abecedario
@@ -31,23 +38,23 @@ for letter in "a":
     search_bar.clear()
     search_bar.send_keys(letter)
     search_bar.send_keys(Keys.RETURN)
-    time.sleep(3)
+    time.sleep(2)
 
     try:
         peliculas_chip = driver.find_element(By.XPATH, "//a[contains(@href, '/find/') and contains(., 'Películas')]")
         peliculas_chip.click()
-        time.sleep(3)
+        time.sleep(2)
     except Exception as e:
         print(f"No se encontró la opción 'Películas' para la letra '{letter}': {e}")
         continue
 
     # Expande "Coincidencias más populares" haciendo clic en el botón tres veces
-    for _ in range(25):
+    for _ in range(1):
         try:
             # Buscar y hacer clic en el botón "Coincidencias más populares"
             load_more_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'ipc-see-more__button') and .//span[text()='Coincidencias más populares']]")))
             ActionChains(driver).move_to_element(load_more_button).click().perform()
-            time.sleep(3)  # Esperar a que se carguen más películas
+            time.sleep(2)  # Esperar a que se carguen más películas
             print("Se ha cargado un nuevo conjunto de películas.")
         except:
             print("No se encontró el botón o no hay más resultados para cargar.")
@@ -65,7 +72,7 @@ for letter in "a":
     # Extraer y guardar la información de cada película
     for url in movie_links:
         driver.get(url)
-        time.sleep(3)
+        time.sleep(2)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         json_ld_tag = soup.find('script', type='application/ld+json')
         if json_ld_tag:

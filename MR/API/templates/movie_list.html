@@ -1,0 +1,26 @@
+<!-- movie_list.html dentro de API/templates -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Películas</title>
+</head>
+<body>
+    <h1>Lista de Películas</h1>
+    <ul>
+        {% for movie in movies %}
+            <li>
+                <h2>{{ movie.title }}</h2>
+                <p>Voto promedio: {{ movie.vote_average }}</p>
+                <p>Palabras clave: {{ movie.keywords }}</p>
+                <p>Reparto: {{ movie.cast_ }}</p>
+                <p>Director: {{ movie.director_id }}</p>
+                <p>Sipnosis: {{ movie.sipnosis }}</p>
+            </li>
+        {% empty %}
+            <p>No hay películas para mostrar.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>

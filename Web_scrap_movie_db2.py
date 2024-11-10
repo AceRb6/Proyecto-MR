@@ -21,7 +21,13 @@ service = Service(executable_path=edge_driver_path)
 driver = webdriver.Edge(service=service, options=options)
 wait = WebDriverWait(driver, 10)
 # Conexión a la base de datos PostgreSQL
-conn = psycopg2.connect("dbname=Movies2 user=postgres password=as52")
+conn = psycopg2.connect(
+    dbname="Movies", 
+    user="postgres", 
+    password="as52", 
+    host="localhost", 
+    port="5433"
+)
 cur = conn.cursor()
 
 # Recorremos cada letra del alfabeto
@@ -45,7 +51,7 @@ for letter in 'a':
         continue
     
      # Expande "Coincidencias más populares" haciendo clic en el botón tres veces
-    for _ in range(3):
+    for _ in range(1):
         try:
             load_more_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'ipc-see-more__button') and .//span[text()='Coincidencias más populares']]")))
             ActionChains(driver).move_to_element(load_more_button).click().perform()
