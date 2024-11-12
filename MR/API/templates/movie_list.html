@@ -1,26 +1,74 @@
-<!-- movie_list.html dentro de API/templates -->
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Películas</title>
+    <title>Top 10 Películas</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>Lista de Películas</h1>
-    <ul>
-        {% for movie in movies %}
-            <li>
-                <h2>{{ movie.title }}</h2>
-                <p>Voto promedio: {{ movie.vote_average }}</p>
-                <p>Palabras clave: {{ movie.keywords }}</p>
-                <p>Reparto: {{ movie.cast_ }}</p>
-                <p>Director: {{ movie.director_id }}</p>
-                <p>Sipnosis: {{ movie.sipnosis }}</p>
-            </li>
-        {% empty %}
-            <p>No hay películas para mostrar.</p>
-        {% endfor %}
-    </ul>
+    <div class="carousel-container">
+        <button class="navigation-button prev-button">❮</button>
+        <div class="carousel">
+            {% for movie in movies %}
+            <div class="movie-card" 
+                 data-movie-id="{{ movie.id }}"
+                 data-movie-title="{{ movie.title }}"
+                 data-movie-director="{{ movie.director_id }}"
+                 data-movie-cast="{{ movie.cast }}"
+                 data-movie-keywords="{{ movie.keywords }}"
+                 data-movie-vote="{{ movie.vote_average }}"
+                 data-movie-synopsis="{{ movie.sipnosis }}">
+                <img src="{{ movie.imagen }}" alt="{{ movie.title }}">
+            </div>
+            {% empty %}
+            <div class="no-movies">
+                No hay películas disponibles
+            </div>
+            {% endfor %}
+        </div>
+        <button class="navigation-button next-button">❯</button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="movieModal">
+        <div class="modal-content">
+            <button class="close-button">&times;</button>
+            <div class="modal-header">
+                <h2>DATOS DE LA PELÍCULA</h2>
+            </div>
+            <div class="movie-info-grid">
+                <div class="movie-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Título</span>
+                        <span class="movie-title"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Director</span>
+                        <span class="movie-director"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Reparto</span>
+                        <span class="movie-cast"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Palabras clave</span>
+                        <span class="movie-keywords"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Voto promedio</span>
+                        <span class="movie-vote"></span>
+                    </div>
+                </div>
+                <div class="movie-synopsis-section">
+                    <span class="detail-label">Sinopsis</span>
+                    <p class="movie-synopsis"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
