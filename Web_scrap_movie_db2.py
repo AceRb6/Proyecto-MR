@@ -22,7 +22,7 @@ driver = webdriver.Edge(service=service, options=options)
 wait = WebDriverWait(driver, 10)
 # Conexión a la base de datos PostgreSQL
 conn = psycopg2.connect(
-    dbname="Movies", 
+    dbname="Movies2", 
     user="postgres", 
     password="as52", 
     host="localhost", 
@@ -39,23 +39,23 @@ for letter in 'a':
     search_bar.clear()
     search_bar.send_keys(letter)
     search_bar.send_keys(Keys.RETURN)
-    time.sleep(3)
+    time.sleep(2)
 
     # Seleccionar solo la categoría "Películas" si está disponible
     try:
         peliculas_chip = driver.find_element(By.XPATH, "//a[contains(@href, '/find/') and contains(., 'Películas')]")
         peliculas_chip.click()
-        time.sleep(3)
+        time.sleep(1)
     except Exception as e:
         print(f"No se encontró la opción 'Películas' para la letra '{letter}': {e}")
         continue
     
      # Expande "Coincidencias más populares" haciendo clic en el botón tres veces
-    for _ in range(1):
+    for _ in range(15):
         try:
             load_more_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'ipc-see-more__button') and .//span[text()='Coincidencias más populares']]")))
             ActionChains(driver).move_to_element(load_more_button).click().perform()
-            time.sleep(3)  # Esperar a que se carguen más películas
+            time.sleep(1)  # Esperar a que se carguen más películas
             print("Se ha cargado un nuevo conjunto de películas.")
         except:
             print("No se encontró el botón o no hay más resultados para cargar.")
@@ -75,7 +75,7 @@ for letter in 'a':
     # Extraer datos de cada película
     for url in movie_links:
         driver.get(url)
-        time.sleep(5)  # Esperar para cargar la página de la película
+        time.sleep(1)  # Esperar para cargar la página de la película
         
         # Obtener el HTML y parsearlo
         soup = BeautifulSoup(driver.page_source, 'html.parser')
