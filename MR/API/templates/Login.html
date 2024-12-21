@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Sitio de Películas</title>
+    <link rel="stylesheet" href="{% static 'css/style_login.css' %}">
+</head>
+<body>
+    <div class="wave"></div>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <h1>Crear Cuenta</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fa-brands fa-google-plus-g"></i></a>
+                </div>
+                <span>Usar E-mail para registrarse</span>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <input type="hidden" name="form_type" value="signup">
+                <input type="text" name="username" placeholder="Nombre de usuario" required />
+                <input type="text" name="signup_name" placeholder="Nombre" required />
+                <input type="email" name="signup_email" placeholder="Correo" required />
+                <input type="password" name="signup_password" placeholder="Contraseña" required />
+                <button type="submit">Crear Cuenta</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <h1>Iniciar Sesión</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fa-brands fa-google-plus-g"></i></a>
+                </div>
+                <span>Usar E-mail para iniciar sesión</span>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <input type="hidden" name="form_type" value="login">
+                <input type="text" name="login_email" placeholder="Correo" required/>
+                <input type="password" name="login_password" placeholder="Contraseña"  required/>
+                <a href="#">¿Olvidaste tu contraseña?</a>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>¡Bienvenido!</h1>
+                    <p> Si ya tienes cuenta con nosotros por favor ingresa con tus datos</p>
+                    <button class="ghost" id="signIn">Iniciar Sesión</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>¿Eres nuevo?</h1>
+                    <p> Ingresa tus datos personales y comienza una nueva experiencia con nosotros</p>
+                    <button class="ghost" id="signUp">Crear Cuenta</button>
+                </div> 
+            </div>    
+        </div>
+        <script src="{% static 'js/script_login.js' %}"></script>
+    </div>
+</body>

@@ -31,7 +31,7 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 # Recorremos cada letra del alfabeto
-for letter in 'a':
+for letter in 'lmnopqrstuvwxyz':
     print(f"Procesando la letra '{letter}'...")
     # Abrir IMDb y buscar por letra
     driver.get("https://www.imdb.com/")

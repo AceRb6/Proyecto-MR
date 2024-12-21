@@ -8,95 +8,85 @@
     <link rel="stylesheet" href="{% static 'css/style_home.css' %}">
 </head>
 <body>
-    <div class="wave-background"></div>
-    
-    <nav class="navbar">
-        <div class="nav-left">
-            <a href="{% url 'home' %}" class="logo">
-                <img src="{% static 'images/logo.png' %}" alt="Logo">
-            </a>
+    <div id="app">
+        <div class="video-background-container">
+            <video autoplay muted loop playsinline>
+                <source src="{% static 'video/fondo.mp4' %}" type="video/mp4">
+            </video>
         </div>
-        
-        <div class="nav-middle">
-            <ul class="nav-links">
-                <li><a href="{% url 'home' %}">Inicio</a></li>
-                <li><a href="{% url 'top10' %}">Top 10</a></li>
-                <li><a href="{% url 'genres' %}">Recomendación por género</a></li>
-                <li><a href="{% url 'advanced' %}">Recomendación Avanzada</a></li>
-            </ul>
-        </div>
-        
-        <div class="nav-right">
-            {% if user.is_authenticated %}
-                <div class="user-menu">
-                    <span>Bienvenido, {{ user.username }}</span>
-                    <a href="{% url 'logout' %}" class="btn-logout">Cerrar Sesión</a>
-                </div>
-            {% else %}
-                <a href="{% url 'login' %}" class="btn-login">Iniciar Sesión</a>
-            {% endif %}
-        </div>
-    </nav>
-    
-    <!-- Sección hero después del navbar -->
-    <div class="hero-section">
-        <h1>Descubre Tu Próxima Película Favorita</h1>
-        <p>Explora nuestras recomendaciones personalizadas y encuentra tu nueva película favorita.</p>
-        <div class="feature-buttons">
-            <a href="{% url 'top10' %}" class="feature-btn">
-                <h3>Top 10</h3>
-                <p>Las mejores películas del momento.</p>
-            </a>
-            <a href="{% url 'genres' %}" class="feature-btn">
-                <h3>Recomendación por género</h3>
-                <p>Encuentra películas que se ajusten a tus gustos.</p>
-            </a>
-            <a href="{% url 'advanced' %}" class="feature-btn">
-                <h3>Recomendación avanzada</h3>
-                <p>Explora nuestras recomendaciones personalizadas.</p>
-            </a>
-        </div>
-    </div>
-    
-    <!-- Contenido Principal -->
-    <div class="content">
-        <h1>Descubre Tu Próxima Película Favorita</h1>
-        <div id="carrusel" class="carousel-container">
-            <div class="carousel">
-                {% for movie in movies %}
-                    <div class="movie-card">
-                        <img src="{{ movie.imagen }}" alt="Imagen de la película">
+        <div class="contenido">
+            <header>
+                <nav class="navbar">
+                  <div class="nav-left">
+                    <a href="{% url 'home' %}" class="logo">
+                      <img src="{% static 'images/logo.png' %}" alt="Logo">
+                    </a>
+                  </div>
+                  <ul class="nav-links">
+                    <li><a href="{% url 'home' %}">Inicio</a></li>
+                    <li><a href="{% url 'genres' %}">Recomendación por género</a></li>
+                    <li><a href="{% url 'advanced' %}">Recomendación Avanzada</a></li>
+                  </ul>
+                  <div class="nav-right">
+                    {% if user.is_authenticated %}
+                    <div class="user-menu">
+                      <span>Bienvenido, {{ user.username }}</span>
+                      <a href="{% url 'logout' %}" class="btn-logout">Cerrar Sesión</a>
                     </div>
-                {% endfor %}
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn-login">Iniciar Sesión</a>
+                    {% endif %}
+                  </div>
+                </nav>
+              </header>
+
+            <section class="hero-section">
+                <h1>Descubre Tu Próxima Película Favorita</h1>
+                <p>Explora nuestras recomendaciones personalizadas y encuentra tu nueva película favorita.</p>
+                <div class="feature-buttons">
+                    <button onclick="window.location.href='{% url 'genres' %}'" class="neon-btn">
+                        <span>Recomendación por género</span>
+                    </button>
+                    <button onclick="window.location.href='{% url 'advanced' %}'" class="neon-btn">
+                        <span>Recomendación avanzada</span>
+                    </button>
+                </div>
+            </section>
+
+            <div class="carousel-container">
+                <div class="carousel">
+                    {% for movie in movies %}
+                    <div class="movie-card">
+                        <img src="{{ movie.imagen }}" alt="{{ movie.title }}">
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
+
+            <div class="content" role="main">
+                {% block content %}{% endblock %}
+            </div>
+
+            <footer>
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <p>&copy; 2024 Movie Recommender. Todos los derechos reservados.</p>
+                        <p>Datos proporcionados por IMDb</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#">Acerca de</a>
+                        <a href="#">Política de Privacidad</a>
+                        <a href="#">Términos de Uso</a>
+                        <a href="#">Contacto</a>
+                    </div>
+                    <div class="footer-tech">
+                        <p>Tecnologías utilizadas:</p>
+                        <p>Django | Python | PostgreSQL | Machine Learning</p>
+                    </div>
+                </div>
+            </footer>
         </div>
+        <script src="{% static 'js/script_Home.js' %}"></script>
     </div>
-    
-    <main class="content">
-        {% block content %}
-        {% endblock %}
-    </main>
-    
-    <!-- Footer actualizado -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-info">
-                <p>&copy; 2024 Movie Recommender. Todos los derechos reservados.</p>
-                <p>Datos proporcionados por IMDb</p>
-            </div>
-            <div class="footer-links">
-                <a href="#">Acerca de</a>
-                <a href="#">Política de Privacidad</a>
-                <a href="#">Términos de Uso</a>
-                <a href="#">Contacto</a>
-            </div>
-            <div class="footer-tech">
-                <p>Tecnologías utilizadas:</p>
-                <p>Django | Python | PostgreSQL | Machine Learning</p>
-            </div>
-        </div>
-    </footer>
-    
-    <script src="{% static 'js/script_home.js' %}"></script>
 </body>
 </html>

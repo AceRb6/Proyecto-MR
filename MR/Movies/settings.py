@@ -12,7 +12,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,7 +42,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'API/templates',
-            ],
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,8 +66,8 @@ DATABASES = {
         'NAME': 'Movies2',
         'USER': 'postgres',
         'PASSWORD': 'as52',
-        'HOST': 'localhost',  # Si la base de datos está en el mismo equipo
-        'PORT': '5433',  # El puerto por defecto de PostgreSQL
+        'HOST': 'localhost', 
+        'PORT': '5433', 
     }
 }
 
@@ -116,3 +115,4 @@ STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = 'login' 

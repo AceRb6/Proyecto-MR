@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Sitio de Películas</title>
+    <link rel="stylesheet" href="{% static 'css/style_preparing.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+</head>
+<body>
+    <div id="app">
+        <div class="video-background">
+            <video autoplay muted loop playsinline>
+                <source src="{% static 'video/fondo2.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+        <div class="container">
+            <div class="cloud">
+                <h2>Analizando...</h2>
+            </div>
+        </div>
+        <script src="{% static 'js/script_Preparing.js' %}"></script>
+    </div>
+</body>
+</html>

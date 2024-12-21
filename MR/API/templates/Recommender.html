@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Sitio de Películas</title>
+    <link rel="stylesheet" href="{% static 'css/style_recommender.css' %}">
+</head>
+<body>
+    <div id="app">
+        <div class="video-background-container">
+            <video autoplay muted loop playsinline>
+                <source src="{% static 'video/fondo.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+        <div class="contenido">
+            <header>
+                <nav class="navbar">
+                  <div class="nav-left">
+                    <a href="{% url 'home' %}" class="logo">
+                      <img src="{% static 'images/logo.png' %}" alt="Logo">
+                    </a>
+                  </div>
+                  <ul class="nav-links">
+                    <li><a href="{% url 'home' %}">Inicio</a></li>
+                    <li><a href="{% url 'genres' %}">Recomendación por género</a></li>
+                    <li><a href="{% url 'advanced' %}">Recomendación Avanzada</a></li>
+                  </ul>
+                  <div class="nav-right">
+                    {% if user.is_authenticated %}
+                    <div class="user-menu">
+                      <span>Bienvenido, {{ user.username }}</span>
+                      <a href="{% url 'logout' %}" class="btn-logout">Cerrar Sesión</a>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn-login">Iniciar Sesión</a>
+                    {% endif %}
+                  </div>
+                </nav>
+              </header>
+
+              <div class="container">
+                <div class="slide">
+                    {% for movie in movies %}
+                    <div class="item {% if forloop.first %}active{% endif %}" style="background-image: url('{{ movie.imagen }}')">
+                        <div class="content">
+                            <div class="poster">
+                                <img src="{{ movie.imagen }}" alt="{{ movie.title }}">
+                            </div>
+                            <div class="text-content">
+                                <div class="name">{{ movie.title }}</div>
+                                <div class="description">{{ movie.sipnosis }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="button">
+                        <button class="prev"><i class="fas fa-chevron-left"></i></button>
+                        <button class="next"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <p>&copy; 2024 Movie Recommender. Todos los derechos reservados.</p>
+                        <p>Datos proporcionados por IMDb</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#">Acerca de</a>
+                        <a href="#">Política de Privacidad</a>
+                        <a href="#">Términos de Uso</a>
+                        <a href="#">Contacto</a>
+                    </div>
+                    <div class="footer-tech">
+                        <p>Tecnologías utilizadas:</p>
+                        <p>Django | Python | PostgreSQL | Machine Learning</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <script src="{% static 'js/script_Recommender.js' %}"></script>
+    </div>
+</body>
+</html>

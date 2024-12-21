@@ -1,17 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User 
 class Director(models.Model):
-    name = models.CharField(max_length=255)
+    director_name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return self.director_name
 
     class Meta:
         db_table = 'directors'  # Nombre de la tabla sin prefijo
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, db_column='genre_name')
 
     def __str__(self):
         return self.name
@@ -44,14 +44,10 @@ class MovieGenre(models.Model):
         db_table = 'movie_genres'  # Nombre de la tabla sin prefijo
 
 class MovieRating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Relación con el usuario
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)  # Relación con la película
-    rating = models.DecimalField(max_digits=3, decimal_places=1)  # Calificación, por ejemplo, de 1 a 10 con un decimal
-    created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora en que se registró la calificación
-
-    def __str__(self):
-        return f'{self.user.username} - {self.movie.title} - {self.rating}'
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE,default=None)
+    rating = models.DecimalField(max_digits=3, decimal_places=1)
 
     class Meta:
-        db_table = 'movie_ratings'  # Nombre de la tabla en la base de datos
-        unique_together = ('user', 'movie')  # Evita duplicar calificaciones para un usuario y una película
+        db_table = 'movie_ratings'  # Nombre de la tabla sin prefijo
+        unique_together = ('user_id', 'movie_id')

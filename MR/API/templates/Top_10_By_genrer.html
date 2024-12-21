@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Sitio de Películas</title>
+    <link rel="stylesheet" href="{% static 'css/style_Top_10_genrers.css' %}">
+</head>
+<body>
+    <div id="app">
+        <div class="video-background-container">
+            <video autoplay muted loop playsinline>
+                <source src="{% static 'video/fondo.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+        <div class="contenido">
+            <header>
+                <nav class="navbar">
+                    <div class="nav-left">
+                      <a href="{% url 'home' %}" class="logo">
+                        <img src="{% static 'images/logo.png' %}" alt="Logo">
+                      </a>
+                    </div>
+                    <ul class="nav-links">
+                      <li><a href="{% url 'home' %}">Inicio</a></li>
+                      <li><a href="{% url 'genres' %}">Recomendación por género</a></li>
+                      <li><a href="{% url 'advanced' %}">Recomendación Avanzada</a></li>
+                    </ul>
+                    <div class="nav-right">
+                      {% if user.is_authenticated %}
+                      <div class="user-menu">
+                        <span>Bienvenido, {{ user.username }}</span>
+                        <a href="{% url 'logout' %}" class="btn-logout">Cerrar Sesión</a>
+                      </div>
+                      {% else %}
+                      <a href="{% url 'login' %}" class="btn-login">Iniciar Sesión</a>
+                      {% endif %}
+                    </div>
+                  </nav>
+            </header>
+
+            <main>
+              <section class="genre-section">
+                <h2>Géneros</h2>
+                <div class="genre-buttons">
+                  {% for genre in genres %}
+                  <button class="genre-btn neon-btn{% if genre.name == selected_genre %} active{% endif %}" data-genre="{{ genre.name }}" onclick="updateMovieCarousel('{{ genre.name }}')">
+                    {{ genre.name }}
+                  </button>
+                  {% endfor %}
+                </div>
+              </section>
+          
+
+              <div id="movie-carousel-container">
+                <div class="carousel-container">
+                  <div class="movie-carousel" data-genre="{{ selected_genre }}">
+                    {% for movie in top_movies %}
+                    <div class="movie-card" data-genre="{{ movie.moviegenre.genre.name }}">
+                      <img src="{{ movie.imagen }}" alt="{{ movie.title }}">
+                      <h3>{{ movie.title }}</h3>
+                      <p> Calificacion: {{ movie.vote_average }}</p>
+                      <p>{{ movie.sipnosis }}</p>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              
+            </main>
+
+            <div class="content" role="main">
+                {% block content %}{% endblock %}
+            </div>
+
+            <footer>
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <p>&copy; 2024 Movie Recommender. Todos los derechos reservados.</p>
+                        <p>Datos proporcionados por IMDb</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#">Acerca de</a>
+                        <a href="#">Política de Privacidad</a>
+                        <a href="#">Términos de Uso</a>
+                        <a href="#">Contacto</a>
+                    </div>
+                    <div class="footer-tech">
+                        <p>Tecnologías utilizadas:</p>
+                        <p>Django | Python | PostgreSQL | Machine Learning</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <script src="{% static 'js/script_top_10_genrer.js' %}"></script>
+    </div>
+</body>
+</html>

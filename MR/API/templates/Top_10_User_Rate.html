@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Sitio de Películas</title>
+    <link rel="stylesheet" href="{% static 'css/style_top_10_user.css' %}">
+</head>
+<body>
+    <div id="app">
+      <div class="video-background-container">
+        <video autoplay muted loop playsinline>
+            <source src="{% static 'video/fondo.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+        <div class="contenido">
+            <header>
+                <nav class="navbar">
+                    <div class="nav-left">
+                      <a href="{% url 'home' %}" class="logo">
+                        <img src="{% static 'images/logo.png' %}" alt="Logo">
+                      </a>
+                    </div>
+                    <ul class="nav-links">
+                      <li><a href="{% url 'home' %}">Inicio</a></li>
+                      <li><a href="{% url 'genres' %}">Recomendación por género</a></li>
+                      <li><a href="{% url 'advanced' %}">Recomendación Avanzada</a></li>
+                    </ul>
+                    <div class="nav-right">
+                      {% if user.is_authenticated %}
+                      <div class="user-menu">
+                        <span>Bienvenido, {{ user.username }}</span>
+                        <a href="{% url 'logout' %}" class="btn-logout">Cerrar Sesión</a>
+                      </div>
+                      {% else %}
+                      <a href="{% url 'login' %}" class="btn-login">Iniciar Sesión</a>
+                      {% endif %}
+                    </div>
+                  </nav>
+            </header>
+
+            <main>
+              <div class="message-container" id="message1">
+                <h2>¡Hola, {{ user.username }}! Hoy vamos a recomendarte películas en base a tus gustos.</h2>
+              </div>
+              <div class="message-container" id="message2" style="display: none;">
+                <h2>Elige mínimo 3 películas de las que te mostraré para poder recomendarte algo en base a tus gustos.</h2>
+              </div>
+
+              <div class="movie-cards-container">
+                <div id="movie-cards"></div>
+              </div>
+
+              <div class="save-selection-btn" id="save-selection-btn">Guardar Selección</div>
+
+            </main>
+        </div>
+        <script src="{% static 'js/script_Top_10_user.js' %}"></script>
+    </div>
+</body>
+</html>

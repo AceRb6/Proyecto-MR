@@ -9,16 +9,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Páginas principales
     path('', views.home, name='home'),
-    path('top10/', views.movie_list, name='top10'),  # Cambiado para coincidir con el template
-    path('genres/',  views.top_10_by_genrer, name='genres'),  # Cambiado para coincidir con el template
-    path('advanced/', views.top_10_by_user, name='advanced'),  # Nueva ruta para recomendación avanzada
-    
+    path('top10/', views.movie_list, name='top10'), 
+    path('genres/', views.top_10_by_genrer, name='genres'), 
+    path('advanced/', views.top_10_by_user, name='advanced'), 
+    path('advanced/json/', views.get_top_10_by_user_json, name='get_top_10_by_user_json'),
+    path('save-selected-movies/', views.save_selected_movies, name='save_selected_movies'),
+    path('preparing/', views.preparing, name='preparing'),
+    path('recommender/', views.recommender, name='recommender'),
     # Autenticación
-    path('login/', views.login_view, name='login'),  # Cambiado a login_view para evitar conflicto
-    #path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]
-
-# Configuración de archivos estáticos
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,413 @@
+/* General Reset */
+@import url(https://use.fontawesome.com/releases/v6.4.2/css/all.css);
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos del contenedor principal */
+.container {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    transform: translateY(-50%);
+    width: 1000px;
+    z-index: 2;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    gap: 40px;
+    /* Agregamos esto para visualizar mejor el contenedor */
+    background-color: rgba(0,0,0,0.5);
+}
+
+.slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Estilos para cada item del slider */
+.slide .item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.5s ease;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* Overlay gradiente para mejorar legibilidad */
+.slide .item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0.2) 100%
+    );
+}
+
+/* Estilos para el item activo */
+.slide .item.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Contenido de la película */
+.slide .item .content {
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    transform: translateY(-50%);
+    width: 600px;
+    z-index: 2;
+    color: #fff;
+    padding: 20px;
+}
+
+
+.content .poster {
+    position: relative; /* Añadimos esto */
+    flex-shrink: 0;
+    width: 300px;
+    height: 450px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* Agregamos un fondo temporal para ver el contenedor */
+    background-color: rgba(255,255,255,0.1);
+}
+
+
+.content .poster img {
+    position: absolute; /* Añadimos esto */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Aseguramos que la imagen esté por encima */
+    z-index: 1;
+}
+
+/* Contenedor del texto */
+.content .text-content {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px; /* Ajusta el padding para aumentar el margen */
+    background-color: rgba(0,0,0,0.5); /* Ajusta el fondo gris */
+    border-radius: 15px; /* Ajusta el radio de las esquinas */
+}
+
+.content .name {
+    font-size: 48px; /* Ajusta el tamaño del título */
+    font-weight: bold;
+    margin-bottom: 30px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.5s ease forwards 0.3s;
+    line-height: 1.2;
+}
+
+.content .description {
+    font-size: 18px; /* Ajusta el tamaño de la sinopsis */
+    line-height: 1.8;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.5s ease forwards 0.6s;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 20px;
+}
+
+/* Botones de navegación */
+.button {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    z-index: 2;
+    display: flex;
+    gap: 10px;
+}
+
+.button button {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilizado de la barra de desplazamiento para la descripción */
+.content .description::-webkit-scrollbar {
+    width: 5px;
+}
+
+.content .description::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.content .description::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .content {
+        width: 90%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .content .poster {
+        width: 250px;
+        height: 375px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        align-items: center;
+        top: 50%;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .content .poster {
+        width: 200px;
+        height: 300px;
+    }
+
+    .content .name {
+        font-size: 32px;
+        text-align: center;
+    }
+
+    .content .description {
+        text-align: center;
+        font-size: 16px;
+    }
+}
+
+:root {
+    --primary-color: #dc3545;
+    --secondary-color: #ffffff;
+    --background-color: #343a40;
+    --text-color: #f8f9fa;
+    --viewport-width: 100vw;
+    --viewport-height: 100vh;
+    --x: 0;
+    --y: 0;
+    --xp: 0;
+    --yp: 0;
+    --hue: calc(0 + (var(--xp) * 500));
+    --bg: hsl(0 0% 10%);
+    --size: 100px;
+    --glow: radial-gradient(
+        50% 50% at center,
+        hsl(var(--hue) 80% 85%),
+        hsl(var(--hue) 80% 70%),
+        transparent
+      )
+      calc((var(--x) * 1px) - (var(--size) * 0.5))
+      calc((var(--y) * 1px) - (var(--size) * 0.5)) / var(--size) var(--size) no-repeat fixed;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui;
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+    overflow-y: auto; /* Agrega esta propiedad */
+}
+
+.contenido {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+.video-background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none; /* Agrega esta propiedad */
+}
+
+#app {
+    overflow-y: auto; /* Agrega esta propiedad */
+}
+
+.video-background-container video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgba(52, 58, 64, 0.9);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #343a40;
+    padding: 1rem;
+  }
+  
+  .nav-left .logo img {
+    height: 40px;
+  }
+  
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+  }
+  
+  .nav-links a {
+    color: #f8f9fa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #dc3545;
+  }
+  
+  .nav-right .btn-login {
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    background-color: #dc3545;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-right .btn-login:hover {
+    background-color: #c82333;
+  }
+  
+
+.btn-login {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.btn-login:hover {
+    background-color: #c82333;
+}
+
+.btn-logout {
+    background-color: #6c757d;
+    color: var(--secondary-color);
+}
+
+.btn-logout:hover {
+    background-color: #5a6268;
+}
+
+
+footer {
+    background: #5a6268;
+    color: var(--secondary-color);
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+    z-index: -1;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-info p {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--background-color);
+}
+
+.footer-tech {
+    font-size: 0.9rem;
+}

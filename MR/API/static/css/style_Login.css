@@ -1,0 +1,236 @@
+@import url("https://use.fontawesome.com/releases/v6.5.1/css/all.css");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat");
+
+h1{
+    font-weight: bold;
+    margin: 0;
+}
+
+p{
+    font-size: 14px;
+    font-weight: 80;
+    line-height: 18px;
+    letter-spacing: 0.5;
+    margin: 30px auto;
+    max-width: 80%;
+}
+
+span{
+    font-size:14px;
+}
+
+a{
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+}
+
+.container{
+    position: relative;
+    display: flex;
+    width: 1000px;
+    max-width: 100%;
+    min-height: 500px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 
+        0 14px 28px rgba(0, 0, 0, 0.2),
+        0 10px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    font-family: "Montserrat", sans-serif;
+    justify-content: center;
+    align-items: center;
+    left: 50%;
+    transform: translate(-50%,20%);
+}
+
+.overlay-container{
+    display: none;
+}
+
+.form-container{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6 ease-in-out;
+}
+
+.sign-in-container{
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.sign-up-container{
+    right: 0;
+    width: 50%;
+    z-index: 1;
+}
+
+.form-container form{
+    height: 100%;
+    display: flex;
+    background: #fff;
+    padding: 0 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.form-container input,
+.form-container button {
+  width: 100%;
+  max-width: 300px;
+}
+
+.social-container{
+    margin: 20px 0;
+}
+
+.social-container a{
+    height: 40px;
+    width: 40px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.form-container input{
+    width: 100%;
+    background: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+}
+
+button{
+    background: #ff445c;
+    color: #fff;
+    border: 1px solid #ff445c;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+}
+
+button:active{
+    transform: scale(0.95);
+}
+
+button:focus{
+    outline: none;
+}
+
+button.ghost{
+    background: transparent;
+    border-color: #fff;
+}
+
+.sign-up-container{
+    left: 0;
+    opacity: 0;
+}
+
+.overlay-container{
+    display: block;
+    position: absolute;
+    z-index: 100;
+    width: 50%;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    overflow: hidden;
+    transition: transform 0.6 ease-in-out;
+}
+
+.overlay{
+    position: relative;
+    height: 100%;
+    width: 200%;
+    left: -100%;
+    background: linear-gradient(to right, #ff445c, #ff445c) no-repeat 0 0 / cover;
+    color: #fff;
+    transform: translateY(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-panel{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 40px;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-right{
+    right: -3%;
+    transform: translateY(0);
+}
+
+.overlay-left{
+    left: -3%;
+    transform: translateY(0);
+}
+
+.container.right-panel-active {
+    & .sign-in-container{
+        transform: translateY(100%);
+    }
+    & .overlay-container{
+        transform: translateX(-100%);
+    }
+    & .sign-up-container{
+        transform: translateX(100%);
+        opacity: 1;
+        z-index: 5;
+    }
+    & .overlay{
+        transform: translateX(50%);
+    }
+    & .overlay-right{
+        transform: translateY(20%);
+    }
+}
+
+body {
+    background-color: #c8c8c8; /* Fondo gris */
+    background-image: url("https://wallpapershome.com/images/pages/pic_h/26309.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
