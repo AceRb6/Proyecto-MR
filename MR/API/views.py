@@ -92,12 +92,14 @@ def login_view(request):
                     return redirect('home')
                 else:
                     print("Error: No se pudo autenticar al usuario recién creado")
-                    messages.error(request, 'Error al iniciar sesión')
+                    messages.success(request, 'Se creo la cuenta')
+                    return render(request, 'login.html')  # Agregar este return
 
             except Exception as e:
                 # Depuración de errores
                 print(f"Error en la creación de usuario: {str(e)}")
                 messages.error(request, f'Error en el registro: {str(e)}')
+                return render(request, 'login.html')  # Agregar este return
     else:
         return render(request, 'login.html')
 

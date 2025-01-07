@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Redireccionar a la página de recomendaciones después de la carga
     setTimeout(() => {
       window.location.href = '/recommender/'; // URL de la página de recomendaciones
-    }, 55000); // Tiempo de redirección en milisegundos
+    }, 270000); // Tiempo de redirección en milisegundos
 
     function randomText(){
         var text = ("!@#$%^*()")
