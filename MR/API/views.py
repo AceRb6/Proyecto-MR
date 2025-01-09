@@ -9,11 +9,18 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
+#Procesos de sklearn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import normalize
+#librerias extras y de preprocesamiento de texto
 import numpy as np
 from numpy import array
 import threading
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import SnowballStemmer
+
 
 def movie_list(request):
     movies = Movie.objects.all()
@@ -119,9 +126,6 @@ def top_10_by_genrer(request):
     else:
         top_movies = Movie.objects.all().order_by('-vote_average')[:10]
 
-    # Depuración: imprime el número de películas encontradas
-    print(f"Películas encontradas: {top_movies.count()}")
-
     context = {
         'genres': genres,
         'selected_genre': selected_genre,
@@ -216,15 +220,27 @@ def obtener_recomendaciones_avanzadas(user_id):
     # Obtener las calificaciones del usuario
     user_ratings = MovieRating.objects.filter(user_id=user_id).values_list('movie_id', 'rating')
 
+    # Obtener las sinopsis de las películas
+    sinopsis = Movie.objects.all().values_list('sipnosis', flat=True)
+
+    # Preprocesar las sinopsis
+    sinopsis_preprocesadas = [preprocesar_texto(sinopsis_) for sinopsis_ in sinopsis]
+
+    # Crear una matriz TF-IDF
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(sinopsis_preprocesadas)
+
+    # Normalizar la matriz TF-IDF
+    tfidf_matrix_normalizado = normalize(tfidf_matrix)
+
     # Crear un vector de características del usuario basado en sus calificaciones
-    tfidf_matrix = TfidfVectorizer().fit_transform(Movie.objects.all().values_list('sipnosis', flat=True))
-    user_profile = np.zeros(tfidf_matrix.shape[1])
+    user_profile = np.zeros(tfidf_matrix_normalizado.shape[1])
     for movie_id, rating in user_ratings:
         movie_index = list(Movie.objects.all().values_list('id', flat=True)).index(movie_id)
-        user_profile += tfidf_matrix[movie_index].toarray()[0] * float(rating)
+        user_profile += tfidf_matrix_normalizado[movie_index].toarray()[0] * float(rating)
 
     # Calcular similitud coseno entre el perfil del usuario y todas las películas
-    cosine_similarities = cosine_similarity(user_profile.reshape(1, -1), tfidf_matrix)[0]
+    cosine_similarities = cosine_similarity(user_profile.reshape(1, -1), tfidf_matrix_normalizado)[0]
 
     # Crear un diccionario para almacenar la mejor similitud para cada película
     best_similarities = {}
@@ -252,6 +268,24 @@ def obtener_recomendaciones_avanzadas(user_id):
 
     global resultado
     resultado = movies
+
+#Preprocesamiento del texto
+def preprocesar_texto(texto):
+    # Tokenizar el texto
+    tokens = word_tokenize(texto)
+    
+    # Eliminar stopwords
+    stopwords_ = set(stopwords.words('spanish'))
+    tokens = [token for token in tokens if token not in stopwords_]
+    
+    # Stemming
+    stemmer = SnowballStemmer('spanish')
+    tokens = [stemmer.stem(token) for token in tokens]
+    
+    # Unir los tokens en un solo string
+    texto_preprocesado = ' '.join(tokens)
+    
+    return texto_preprocesado
 
 
 def recommender(request):
